@@ -1,4 +1,34 @@
 <?php
+function setBonusCount($connect, $count_bonus, $acc_id)
+{
+  $sql = "UPDATE `lk_bonus` SET `count` = (count + $count_bonus) WHERE `acc_id` = $acc_id";
+  $res = $connect->query($sql);
+}
+
+function initBonus($connect, $acc_id)
+{
+  // Проверяем есть ли в таблице с бонусами аккаунт, если нет, то создаём
+  $sql = "SELECT * FROM `lk_bonus` WHERE `acc_id` = $acc_id";
+  $res = $connect->query($sql);
+
+  if (!$res) {  // Если произошла ошибка. Например нет такой таблицы
+    $bonus_count = $connect->error;
+  } else {
+    if ($data = $res->fetch_assoc()) { // Если всё успешно и запись найдена
+      $bonus_count = $data["count"];
+    } else { // Если нет аккаунта в таблице, создаём
+      $sql = "INSERT INTO `lk_bonus` VALUES ($acc_id, 0)";
+      $res = $connect->query($sql);
+      if (!$res) { // Если создание прошло с ошибкой
+        $bonus_count = $connect->error;
+      } else if ($connect->affected_rows == 1) { // Если запись успешно создана
+        $bonus_count = "Ваш аккаунт зарегистрирован. У вас пока 0";
+      }
+    }
+  }
+  return $bonus_count;
+}
+
 function getSafePost($str, $link)
 {
   $str = trim($str);
