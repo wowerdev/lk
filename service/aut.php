@@ -13,6 +13,7 @@ if (isset($_POST["authorization_name"]) and isset($_POST["authorization_pass"]))
     @$_SESSION["username"] = $login;
     @$_SESSION["state"] = "true";
     @$_SESSION["acc_id"] = $data["id"];
+    @$_SESSION["bonus_count"] = initBonus($connectAuth, @$_SESSION["acc_id"]);
     setcookie("login", $login, time() + 999999, "/", "", 0);
     setcookie("hash_pass",  $sha_password, time() + 999999, "/", "", 0);
     echo true;

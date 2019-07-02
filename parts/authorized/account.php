@@ -27,10 +27,6 @@ if (isAut()) {
     }
   }
 
-  $bonus_count = initBonus($connectAuth, $acc_id);
-
-
-
   ?>
 
   <div class="account">
@@ -54,7 +50,7 @@ if (isAut()) {
         <p class="account__p">Последний IP: <span class="orange"><?php echo $last_ip; ?></span></p>
       </li>
       <li class="account__item">
-        <p class="account__p">Ваш баланс: <span class="orange"><?php echo $bonus_count; ?></span> бонусов</p>
+        <p class="account__p">Ваш баланс: <span class="orange"><?php echo @$_SESSION["bonus_count"]; ?></span> бонусов</p>
       </li>
       <li class="account__item <?php echo $hideClass; ?>">
         <button class="account__btn btn" id="сhangePass">Сменить пароль</button>

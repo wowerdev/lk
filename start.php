@@ -19,6 +19,7 @@
           @$_SESSION["username"] = $login;
           @$_SESSION["state"] = "true";
           @$_SESSION["acc_id"] = $data["id"];
+          @$_SESSION["bonus_count"] = initBonus($connectAuth, @$_SESSION["acc_id"]);
           require_once $root . "/parts/authorized.php";
         } else {
           setcookie("login", "", time() - 3600);
