@@ -27,6 +27,29 @@ if (isAut()) {
     }
   }
 
+  // Проверяем есть ли в таблице с бонусами аккаунт, если нет, то создаём
+  $bonus_count;
+  $sql = "SELECT * FROM `lk_bonus` WHERE `acc_id` = $acc_id";
+  $res = $connectAuth->query($sql);
+
+  if (!$res) {  // Если произошла ошибка. Например нет такой таблицы
+    $bonus_count = $connectAuth->error;
+  } else {
+    if ($data = $res->fetch_assoc()) { // Если всё успешно и запись найдена
+      $bonus_count = $data["count"];
+    } else { // Если нет аккаунта в таблице, создаём
+      $sql = "INSERT INTO `lk_bonus` VALUES ($acc_id, 0)";
+      $res = $connectAuth->query($sql);
+      if (!$res) { // Если создание прошло с ошибкой
+        $bonus_count = $connectAuth->error;
+      } else if ($connectAuth->affected_rows == 1) { // Если запись успешно создана
+        $bonus_count = "Ваш аккаунт зарегистрирован. У вас пока 0";
+      }
+    }
+  }
+
+
+
   ?>
 
   <div class="account">
@@ -49,6 +72,9 @@ if (isAut()) {
       <li class="account__item">
         <p class="account__p">Последний IP: <span class="orange"><?php echo $last_ip; ?></span></p>
       </li>
+      <li class="account__item">
+        <p class="account__p">Ваш баланс: <span class="orange"><?php echo $bonus_count; ?></span> бонусов</p>
+      </li>
       <li class="account__item <?php echo $hideClass; ?>">
         <button class="account__btn btn" id="сhangePass">Сменить пароль</button>
         <div class="account__pass-block">
@@ -66,6 +92,6 @@ if (isAut()) {
       </li>
     </ul>
   </div> <?php
-      } else {
-        echo "<div class=\"account\">Вы не авторизированы</div>";
-      } ?>
+        } else {
+          echo "<div class=\"account\">Вы не авторизированы</div>";
+        } ?>
