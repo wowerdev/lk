@@ -5,7 +5,7 @@ function setBonusCount($connect, $count_bonus, $acc_id)
   $res = $connect->query($sql);
 }
 
-function initBonus($connect, $acc_id)
+function initBonus($connect, $acc_id, $start_bonus)
 {
   // Проверяем есть ли в таблице с бонусами аккаунт, если нет, то создаём
   $sql = "SELECT * FROM `lk_bonus` WHERE `acc_id` = $acc_id";
@@ -17,12 +17,12 @@ function initBonus($connect, $acc_id)
     if ($data = $res->fetch_assoc()) { // Если всё успешно и запись найдена
       $bonus_count = $data["count"];
     } else { // Если нет аккаунта в таблице, создаём
-      $sql = "INSERT INTO `lk_bonus` VALUES ($acc_id, 0)";
+      $sql = "INSERT INTO `lk_bonus` VALUES ($acc_id, $start_bonus)";
       $res = $connect->query($sql);
       if (!$res) { // Если создание прошло с ошибкой
         $bonus_count = $connect->error;
       } else if ($connect->affected_rows == 1) { // Если запись успешно создана
-        $bonus_count = "Ваш аккаунт зарегистрирован. У вас пока 0";
+        $bonus_count = $start_bonus;
       }
     }
   }

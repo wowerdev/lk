@@ -4,8 +4,10 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
 if (isAut()) {
   require_once $_SERVER["DOCUMENT_ROOT"] . "/connection.php";
   require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
+
   $acc_id =  $_SESSION["acc_id"];
-  $sql = "SELECT * FROM `account` WHERE `id` = '$acc_id'";
+
+  $sql = "SELECT * FROM `account` WHERE `id` = '$acc_id' LIMIT 1";
   $res = $connectAuth->query($sql);
   $data = $res->fetch_assoc();
 
@@ -14,7 +16,9 @@ if (isAut()) {
   $log_date = $data["last_login"] ? date("d.m.Y", strtotime($data["last_login"])) : "Новый аккаунт";
   $last_ip = $data["last_ip"];
   $email = $data["email"] ? $data["email"] : $data["reg_mail"];
+
   $hideClass = $config_change_pass ? null : "none";
+
   if ($data["online"] == 1) {
     $state = "<span class='green'>Онлайн</span>";
   } else {
@@ -26,6 +30,8 @@ if (isAut()) {
       $state = "<span class='orange'>Оффлайн</span>";
     }
   }
+
+  $bonus_count = initBonus($connectAuth, $acc_id, $config_count_start_bonus);
 
   ?>
 
@@ -50,7 +56,7 @@ if (isAut()) {
         <p class="account__p">Последний IP: <span class="orange"><?php echo $last_ip; ?></span></p>
       </li>
       <li class="account__item">
-        <p class="account__p">Ваш баланс: <span class="orange"><?php echo @$_SESSION["bonus_count"]; ?></span> бонусов</p>
+        <p class="account__p">Ваш баланс: <span class="orange"><?php echo $bonus_count; ?></span> бонусов</p>
       </li>
       <li class="account__item <?php echo $hideClass; ?>">
         <button class="account__btn btn" id="сhangePass">Сменить пароль</button>

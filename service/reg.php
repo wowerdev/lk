@@ -27,7 +27,7 @@ if (!isset($_POST["reg_spam"]) or $_POST["reg_spam"] != "") {
       $sha_pass = strtoupper(sha1(strtoupper($login) . ":" . strtoupper($pass)));
       $sql = "INSERT INTO `account` (`username`, `sha_pass_hash`,  `email`) VALUES('$login', '$sha_pass', '$mail')";
       $res = $connectAuth->query($sql);
-      echo $connectAuth->error ? $connectAuth->error : "<span class=\"success\">Аккаунт $login успешно создан!<br> Наш реалмлист: set realmlist $current_realmlist</span>";
+      echo $connectAuth->error ? $connectAuth->error : "<span class=\"success\">Аккаунт $login успешно создан!<br>$current_realmlist</span>";
     }
   }
 

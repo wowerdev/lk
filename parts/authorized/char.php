@@ -3,6 +3,7 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
   if (isAut() and isset($_SESSION["acc_id"])) {
     require_once $_SERVER["DOCUMENT_ROOT"] . "/connection.php";
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
     $acc_id =  $_SESSION["acc_id"];
     $sql = "SELECT * FROM `characters` WHERE `account` = $acc_id";
     $res = $connectChar->query($sql);
@@ -30,15 +31,10 @@
       "teleport" => $config_teleport
     ];
 
-    $arrChar = [];
-
-
-
     ?>
    <div class="char">
      <ul class="char__list">
        <?php while ($data = $res->fetch_assoc()) {
-          array_push($arrChar, $data["guid"]);
           $lvl = $data["level"];
           $class = $data["class"];
           $name = $data["name"];
@@ -73,16 +69,16 @@
            <div class="char__col char__col--service">
              <ul class="char__service-list">
                <li class="char__service-item <?php echo $config_teleport ? null : "none"  ?>">
-                 <button class="char__service-btn btn btn--min" data-type="teleport">Телепорт в таверну</button>
+                 <button class="char__service-btn btn btn--min" data-price="<?php echo $config_teleport_price ?>" data-type="teleport">Телепорт в таверну</button>
                </li>
                <li class="char__service-item <?php echo $config_change_race ? null : "none"  ?>">
-                 <button class="char__service-btn btn btn--min" data-type="change_race">Сменить рассу</button>
+                 <button class="char__service-btn btn btn--min" data-price="<?php echo $config_change_race_price ?>" data-type="change_race">Сменить рассу</button>
                </li>
                <li class="char__service-item <?php echo $config_change_fraction ? null : "none"  ?>">
-                 <button class="char__service-btn btn btn--min" data-type="change_fraction">Сменить фракцию</button>
+                 <button class="char__service-btn btn btn--min" data-price="<?php echo $config_change_fraction_price ?>" data-type="change_fraction">Сменить фракцию</button>
                </li>
                <li class="char__service-item <?php echo $config_change_nick ? null : "none"  ?>">
-                 <button class="char__service-btn btn btn--min" data-type="change_nick">Сменить ник</button>
+                 <button class="char__service-btn btn btn--min" data-price="<?php echo $config_change_nick_price ?>" data-type="change_nick">Сменить ник</button>
                </li>
              </ul>
            </div>
