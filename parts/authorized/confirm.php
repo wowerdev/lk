@@ -1,6 +1,6 @@
 <?php
 @session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
+require_once  "functions/functions.php";
 if (isAut()) { ?>
   <div class="confirm">
     <form action="/" method="POST" class="confirm__form">

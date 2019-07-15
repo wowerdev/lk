@@ -1,13 +1,13 @@
 <?php
 @session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
+require_once  "../config.php";
+require_once  "../functions/functions.php";
 
 if (isAut()) {
 
   if (isset($_POST["service_type"]) and $_POST["service_type"] != "" and isset($_POST["char_guid"]) and $_POST["char_guid"] != "") {
 
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/connection.php";
+    require_once  "../connection.php";
 
     $type = getSafePost($_POST["service_type"], $connectChar);
 

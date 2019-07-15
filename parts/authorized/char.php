@@ -1,9 +1,9 @@
  <?php
   @session_start();
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
+  require_once  "../../functions/functions.php";
   if (isAut() and isset($_SESSION["acc_id"])) {
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/connection.php";
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
+    require_once  "../../connection.php";
+    require_once  "../../config.php";
     $acc_id =  $_SESSION["acc_id"];
     $sql = "SELECT * FROM `characters` WHERE `account` = $acc_id";
     $res = $connectChar->query($sql);

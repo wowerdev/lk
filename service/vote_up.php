@@ -1,7 +1,7 @@
 <?php
 @session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/connection.php";
+require_once  "../functions/functions.php";
+require_once  "../connection.php";
 
 $countVote = [0, 1, 10, 50, 100];
 $current_day = date('j');

@@ -1,8 +1,8 @@
 <?php
 @session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
+require_once  "../../functions/functions.php";
 if (isAut()) { 
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
+  require_once  "../../config.php";
   ?>
 
   <div class="vote">

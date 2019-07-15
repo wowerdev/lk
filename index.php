@@ -16,9 +16,7 @@ include("connection.php");
 <body class="body">
   <?php
 
-  $root =  $_SERVER["DOCUMENT_ROOT"];
-
-  require_once $root . "/start.php";
+  require_once  "start.php";
   ?>
   <script src="js/root.js"></script>
 

@@ -3,9 +3,9 @@ if (!isset($_POST["reg_spam"]) or $_POST["reg_spam"] != "") {
   echo "<span class=\"fail\">Обнаружен робот</span>";
 } else if (isset($_POST["reg_name"]) and isset($_POST["reg_pass"]) and isset($_POST["reg_mail"]) and isset($_POST["reg_captcha"])) {
 
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/connection.php";
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
+  require_once  "../functions/functions.php";
+  require_once  "../connection.php";
+  require_once  "../config.php";
   /* Основной поток */
 
   $reg_captcha = getNumber($_POST["reg_captcha"]);

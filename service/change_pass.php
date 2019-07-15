@@ -1,12 +1,12 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
+require_once  "../config.php";
 if ($config_change_pass) {
   @session_start();
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
+  require_once  "../functions/functions.php";
   if (isAut()) {
 
     if (isset($_POST["account_old-pass"]) and isset($_POST["account_new-pass"])) {
-      require_once $_SERVER["DOCUMENT_ROOT"] . "/connection.php";
+      require_once  "../connection.php";
 
       $acc_name = $_SESSION["username"];
 

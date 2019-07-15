@@ -1,8 +1,8 @@
 <?php
 
 if (isset($_POST["feedback_theme"]) and isset($_POST["feedback_email"]) and isset($_POST["feedback_msg"])) {
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/functions/functions.php";
+  require_once  "../config.php";
+  require_once  "../functions/functions.php";
   $theme = getsafePostWithoutLink($_POST["feedback_theme"]);
   $emailToAnswer = getsafePostWithoutLink($_POST["feedback_email"]);
   $msg = getsafePostWithoutLink($_POST["feedback_msg"]) . " \n Эмейл для ответа: $emailToAnswer";

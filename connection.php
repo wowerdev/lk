@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/config.php";
+require_once "config.php";
 
 $connectChar = new mysqli($server, $login, $pass, $bd_char);
 $connectAuth = new mysqli($server, $login, $pass, $bd_auth);
