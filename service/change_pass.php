@@ -8,28 +8,37 @@ if ($config_change_pass) {
     if (isset($_POST["account_old-pass"]) and isset($_POST["account_new-pass"])) {
       require_once  "../connection.php";
 
-      $acc_name = $_SESSION["username"];
+      $login = strtoupper($_SESSION["username"]);
 
+      $oldPass = getSafePost($_POST["account_old-pass"], $connectAuth);
+      $newPass = getSafePost($_POST["account_new-pass"], $connectAuth);
+      $newPass = getValidPass($newPass);
 
-      $old = getSafePost($_POST["account_old-pass"], $connectAuth);
-      $new = getSafePost($_POST["account_new-pass"], $connectAuth);
-      $new = getValidPass($new);
-      isValidPass($old, $new);
-      $sha_old = strtoupper(sha1(strtoupper($acc_name) . ":" . strtoupper($old)));
-      $sha_new = strtoupper(sha1(strtoupper($acc_name) . ":" . strtoupper($new)));
-      $sql = "SELECT * FROM `account` WHERE `username` = '$acc_name' AND `sha_pass_hash` = '$sha_old'";
-      $res = $connectAuth->query($sql);
-      $isVerPass = $res->fetch_assoc() ? true : false;
-      if ($isVerPass) {
-        $sql = "UPDATE `account` SET `sha_pass_hash` = '$sha_new', `v` = '' WHERE `sha_pass_hash` = '$sha_old'";
+      // Else нет, т.к isValidPass сам выкинет ошибку и умрёт
+      if (isValidPass($oldPass, $newPass)) {
+        $sql = "SELECT * FROM `account` WHERE `username` = '$login' LIMIT 1";
         $res = $connectAuth->query($sql);
-        if ($res) {
-          echo "<span class='success'>Пароль успешно изменён</span>";
+        if ($res and $res->num_rows == 1) {
+          $data = $res->fetch_assoc();
+          $oldSalt = $data["salt"];
+          $oldVerifier = $data["verifier"];
+          $isAuthUser = VerifySRP6Login($login, $oldPass, $oldSalt, $oldVerifier);
+
+          if ($isAuthUser) {
+            list($salt, $verifier) = GetSRP6RegistrationData($login, $newPass);
+            $sql = "UPDATE `account` SET `salt` = '$salt', `verifier` = '$verifier' WHERE `username` = '$login'";
+            $res = $connectAuth->query($sql);
+            if ($res) {
+              echo "<span class='success'>Пароль успешно изменён</span>";
+            } else {
+              echo "<span class='fail'>Произошла оишбка</span>" . $connectAuth->error;
+            }
+          } else {
+            echo "<span class='fail'>Не совпадает старый пароль</span>";
+          }
         } else {
-          echo "<span class='fail'>Произошла оишбка</span>" . $connectAuth->error;
+          echo "<span class='fail'>Аккаунт не найден</span>";
         }
-      } else {
-        echo "<span class='fail'>Не совпадает старый пароль</span>";
       }
     } else {
       echo "<span class='fail'>Введите данные</span>";
