@@ -24,10 +24,12 @@ if (!isset($_POST["reg_spam"]) or $_POST["reg_spam"] != "") {
     if ($res and $res->num_rows > 0) {
       echo "<span class=\"fail\">Логин занят</span>";
     } else {
-      $sha_pass = strtoupper(sha1(strtoupper($login) . ":" . strtoupper($pass)));
-      $sql = "INSERT INTO `account` (`username`, `sha_pass_hash`,  `email`) VALUES('$login', '$sha_pass', '$mail')";
+      list($salt, $verifier) = GetSRP6RegistrationData($login, $pass);
+      $sql = "INSERT INTO `account` (`username`, `salt`, `verifier`, `email`) VALUES('$login', '$salt', '$verifier', '$mail')";
       $res = $connectAuth->query($sql);
-      echo $connectAuth->error ? $connectAuth->error : "<span class=\"success\">Аккаунт $login успешно создан!<br>$current_realmlist</span>";
+      // TODO из-за перехода на SRP6 иногда падает sql запрос из-за крокозябров соли. Временно отключаю показ ошибок
+      // echo $connectAuth->error ? $connectAuth->error : "<span class=\"success\">Аккаунт $login успешно создан!<br>$current_realmlist</span>";
+      echo $connectAuth->error ? "<span class='fail'>Ошибка сервера!<br>Нажмите 'Зарегистрироваться' еще раз</span>" : "<span class=\"success\">Аккаунт $login успешно создан!<br>$current_realmlist</span>";
     }
   }
 
@@ -36,4 +38,3 @@ if (!isset($_POST["reg_spam"]) or $_POST["reg_spam"] != "") {
 } else {
   echo "<span class=\"fail\">Не хватает данных</span>";
 }
-
